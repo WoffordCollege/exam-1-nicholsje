@@ -114,8 +114,14 @@ public class ConnectFour {
     public Location getTopOfColumn(int column) {
         // Question 1
         // TODO
-        
-        return Location.EMPTY;
+		String r = getColumnAsString(column);
+		if (r.equals("")){
+			return Location.EMPTY;
+		} else if (r.charAt(r.length() - 1) == 'B'){
+			return Location.BLACK;
+		} else {
+			return Location.RED;
+		}
     }
     
     /**
@@ -129,8 +135,12 @@ public class ConnectFour {
     public int getHeightOfColumn(int column) {
         // Question 2
         // TODO
-        
-        return 0;
+        String r = getColumnAsString(column);
+		if (r.equals("")){
+			return 0;
+		} else {
+			return r.length();
+		}
     }
     
     /**
@@ -146,6 +156,21 @@ public class ConnectFour {
     public void dropToken(int column) {
         // Question 3
         // TODO
+		if (column < 7 && column >= 0){
+			String r = getColumnAsString(column);
+			if (getHeightOfColumn(column) == 6){
+				throw new ColumnFullException();
+			} else {
+				int row = getHeightOfColumn(column);
+				if (redTurn){
+					redTurn = false;
+					board[5-row][column] = Location.RED;
+				} else {
+					redTurn = true;
+					board[5-row][column] = Location.BLACK;
+				}
+			}
+		}
         
     }
     
@@ -170,6 +195,27 @@ public class ConnectFour {
         //       along a column.
         
         // TODO
+		for (int i = 0; i < 6; i++){
+			int counter = 0;
+			Location last = Location.EMPTY;
+			for (int j = 5; j > 0; j--){
+				if (board[j][i] != Location.EMPTY){
+					if (board[j][i] == last){
+						counter = counter + 1;
+						if (counter == 3){
+							if (last == Location.BLACK){
+								return Result.BLACKWIN;
+							} else {
+								return Result.REDWIN;
+							}
+						}
+					} else {
+						counter = 0;
+						last = board[j][i];
+					}
+				}
+			}
+		}
         
         return Result.NONE;
     }
@@ -193,8 +239,25 @@ public class ConnectFour {
     public String toString() {
         // Question 5
         // TODO
-        
-        return "";
+		String r = "|";
+        for (int i = 0; i < 6; i++){
+			for (int j = 0; j < 7; j++){
+				if (board[i][j] == Location.BLACK){
+					temp = "B";
+				} else if (board[i][j] == Location.RED){
+					temp = "R";
+				} else {
+					temp = " ";
+				}
+				r = r + temp + "|";
+			}
+			if (i < 5){
+				r = r + "\n|";
+			} else {
+				r = r + "\n---------------";
+			}
+		}
+        return r;
     }
 
 

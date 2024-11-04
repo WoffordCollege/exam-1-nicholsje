@@ -242,6 +242,7 @@ public class ConnectFour {
 		String r = "|";
         for (int i = 0; i < 6; i++){
 			for (int j = 0; j < 7; j++){
+				String temp = "";
 				if (board[i][j] == Location.BLACK){
 					temp = "B";
 				} else if (board[i][j] == Location.RED){
